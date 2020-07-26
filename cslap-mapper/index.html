@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CSLAP Mapper</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Load the OpenLayers library css (js library at the end of the body section)-->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css" type="text/css">
+
+    <!-- Open layers js-->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/build/ol.js"></script>
+
+    <!-- Load the jquery UI libraries-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Include the d3 library -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <!-- Include link to the CSS style sheet for open layers template -->
+    <link rel="stylesheet" type="text/css" href="./cslap.css">
+
+    <!-- Font Awesome style sheet-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+
+<body>
+
+    <!-- Webpage Navigation Bar -->
+    <nav class="navbar navbar-expand-sm navbar-light bg-light" role="navigation">
+
+        <div class="container-fluid">
+
+            <ul class="navbar-nav navbar-left">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.dec.ny.gov/chemical/81576.html"><img src="./img/dec.png"
+                            alt="NYSDEC" class="img-fluid" style="height: 75px;"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <h3 style="position:relative; top: 10px;">CSLAP Mapper</h3>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://nysfola.org/"><img src="./img/NYSFOLA.jpg" alt="NYSFOLA"
+                            class="img-fluid rounded-circle" style="height: 75px;"></a>
+                </li>
+            </ul>
+
+
+
+            <!-- add the About link, left panel button and right panel button to the right-hand side of the navbar -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutModal">
+                        <h4>About</h4>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="leftBtn()">
+                        <h5>Left Panel</h5>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="rightBtn()">
+                        <h5>Right Panel</h5>
+                    </a>
+                </li>
+            </ul>
+
+        </div> <!-- ./container-collapse-->
+
+    </nav>
+    <!--Navbar collapse-->
+
+    <!-- Modal for the About CSLAP Mapper -->
+    <div class="modal fade" id="aboutModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Citizen Statewide Lake Assessment Program</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Overview of the webGIS</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Include a container element for the open layers map and panels (body of the page) -->
+    <div class="container-fluid">
+
+        <!-- Open Layers Map Element-->
+        <div class="container-fluid h-100" id="map">
+
+        </div>
+
+        <!--Add a div element for the pop-ups-->
+        <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content">
+                <!-- <p><a href='#rightPanel'>View Lake</div></p> -->
+            </div>
+        </div>
+
+
+        <!-- Include the layer button switchers in a grid-container to view left and right panels -->
+        <div id='layerSwitcherPanel' class="grid-container">
+            <div class="grid-1">
+                <!--Base layers-->
+                <div class="baseLayerSelect">
+                    <h2>Base layers</h2>
+                    <input type="radio" name="baseLayerRadioBtn" value='OSMStandard' checked>OSM Standard<br>
+                    <input type="radio" name="baseLayerRadioBtn" value='OSMHumanitarian'>OSM Humanities<br>
+                    <input type="radio" name="baseLayerRadioBtn" value='StamenTerrain'>StamenTerrain<br>
+                </div>
+
+                <!-- Data layers -->
+                <div class="dataLayerSelect">
+                    <h2>Data Layers</h2>
+                    <input type="radio" name="dataLayerRadioBtn" value='cslap16' checked>CSLAP 2016<br>
+                    <input type="radio" name="dataLayerRadioBtn" value='cslap17'>CSLAP 2017<br>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--Add the button to hide/display the layer switcher-->
+        <div id="layerBtnDisplay">
+            <button onclick="layerBtn()" class="button"><i class="fas fa-layer-group"></i></button>
+        </div>
+
+
+        <!--Left and right panels to display data and charts -->
+        <div class="panels">
+            <!--Left panel-->
+            <div id="leftPanel" class="container p-3 panel">
+                <h3 style="font-family:verdana;">Statewide Lake Data</h3>
+
+                <div id="dataRadioBtnLP">
+                    <h3>Select a Sampling Year:</h3>
+                    <input type="radio" name="dataSelectLP" value='cslap16' checked>2016<br>
+                    <input type="radio" name="dataSelectLP" value='cslap17'>2017<br>
+                </div>
+
+                <form>
+                    <label for="x-var">Choose an x-var:</label>
+                    <select id="x-var" name="x-var" onchange="changeXVar()">
+                        <!-- <option>Average Phosphorous</option> -->
+                    </select>
+                </form>
+
+                <form>
+                    <label for="y-var">Choose a y-var:</label>
+                    <select id="y-var" name="y-var" onchange="changeYVar()">
+                        <!-- <option>Average Phosphorous</option> -->
+                    </select>
+                </form>
+
+                <canvas id="myChart">
+                    <!-- <script src="./chart_a.js"></script> -->
+                </canvas>
+
+            </div>
+
+            <!-- Right panel -->
+            <div id="rightPanel" class="container p-3 panel">
+                <h3 style="font-family:verdana;">Lake Data</h3>
+
+                <div id="dataRadioBtnRP">
+                    <h3>Select a Sampling Year:</h3>
+                    <input type="radio" name="dataSelectRP" value='cslap16' checked>2016<br>
+                    <input type="radio" name="dataSelectRP" value='cslap17'>2017<br>
+                </div>
+        
+                <form>
+                    <label for="lakeSelectRP">Choose a Lake:</label>
+                    <select id="lakeSelectRP" name="lakeSelectRP" onchange="changeLake()">
+                        <!-- <option>Average Phosphorous</option> -->
+                    </select>
+                </form>
+        
+                <form>
+                    <label for="timeYvar">Choose a y-var:</label>
+                    <select id="timeYvar" name="timeYvar" onchange="changeTimeVar()">
+                        <!-- <option>Average Phosphorous</option> -->
+                    </select>
+                </form>
+
+                <canvas id="timeChart"></canvas>
+
+
+            </div>
+
+        </div>
+
+    </div> <!-- Close the entire container for the map and panels -->
+
+    <script src="./index.js"></script>
+
+    <!-- Include Bootstrap Core Javacript (jQuery, then Popper, then Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- Chart.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+
+</body>
+
+</html>

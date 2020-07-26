@@ -1,0 +1,119 @@
+body{
+    margin: 0;
+    padding: 0
+}
+
+#banner {
+    background-color: lightskyblue;
+    max-width: 25%;
+    max-height: 20%;
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    border: lightslategray;
+}
+
+#mainLogo {
+    top: 2px;
+    bottom: 2px;
+}
+
+#map {
+    z-index: -1;
+    position: absolute;
+}
+
+.ol-zoom {
+    left: unset;
+    right: 8px;
+}
+
+/* Panels styling */
+
+.panels{
+    position: relative;
+}
+.panel {
+    display: none;
+  }
+
+#leftPanel {
+    position: absolute;
+    width: 35%;
+    height: 650px;
+    top: 20px;
+    left: 25px;
+    background-color: #e1e6ed;
+    padding: 5px;
+    border: 1px solid black;
+  }
+  
+  #rightPanel {
+    position: absolute;
+    width: 30%;
+    height: 650px;
+    top: 20px;
+    right: 25px;
+    padding: 5px;
+    background-color: #e1e6ed;
+    border: 1px solid black;
+  }
+
+  #layerSwitcherPanel{
+    position: absolute;
+    display: none;
+    right: 100px;
+    top: 130px;
+    padding: 5px;
+    background-color: lightskyblue;
+    border: 1px solid black;
+}
+
+#layerBtnDisplay {
+    position: absolute;
+    top: 117px;
+    right: 45px;
+}
+
+/* Map Pop-up styling*/
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+  }
+  .ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  .ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+  }
+  .ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+  }
+  .ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+  .ol-popup-closer:after {
+    content: "✖";
+  }
